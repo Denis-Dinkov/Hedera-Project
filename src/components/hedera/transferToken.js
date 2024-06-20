@@ -6,7 +6,7 @@ import {
   Hbar,
 } from "@hashgraph/sdk";
 
-const aliceId = process.env.REACT_APP_MY_ACCOUNT_ID;
+const myAccountId = process.env.REACT_APP_MY_ACCOUNT_ID;
 const alicePrivateKey = process.env.REACT_APP_ALICE_PRIVATE_KEY;
 
 export default async function transferToken(client, tokenId) {
@@ -21,7 +21,7 @@ export default async function transferToken(client, tokenId) {
   const newAccountId = getReceipt.accountId;
 
   const query = await new AccountBalanceQuery()
-    .setAccountId(aliceId)
+    .setAccountId(myAccountId)
     .execute(client);
 
   console.log(
