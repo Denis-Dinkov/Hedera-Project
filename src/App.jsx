@@ -11,7 +11,9 @@ function App() {
   const [btcTokenId, setBtcTokenId] = useState();
   const [ethTokenId, setEthTokenId] = useState();
   const [usdTokenId, setUsdTokenId] = useState();
+  const [associateRes, setAssociateRes] = useState();
 
+  const [associateLoading, setAssociateLoading] = useState(false);
   const [creatingETHToken, setCreatingETHToken] = useState(false);
   const [creatingBTCToken, setCreatingBTCToken] = useState(false);
   const [creatingUSDToken, setCreatingUSDToken] = useState(false);
@@ -38,7 +40,7 @@ function App() {
   }
 
   async function transferTokenToAlice() {
-    await transferToken(client, btcTokenId);
+    const res = await transferToken(client, btcTokenId);
   }
   useEffect(() => {
     async function setup() {
@@ -79,6 +81,7 @@ function App() {
       <MyGroup
         buttonLabel={"Transfer USDT Token to Alice"}
         fcn={transferTokenToAlice}
+        text={usdTokenId && `USDT Token ID: ${usdTokenId}`}
       />
 
       <div className="logo">

@@ -4,11 +4,10 @@ import {
   AccountCreateTransaction,
   AccountBalanceQuery,
   Hbar,
-  TransferTransaction,
 } from "@hashgraph/sdk";
 
-const myAccount = process.env.REACT_APP_MY_ACCOUNT_ID;
-const aliceId = process.env.REACT_APP_ALICE_ACCOUNT_ID;
+const aliceId = process.env.REACT_APP_MY_ACCOUNT_ID;
+const alicePrivateKey = process.env.REACT_APP_ALICE_PRIVATE_KEY;
 
 export default async function transferToken(client, tokenId) {
   const newAccPrivateKey = PrivateKey.generateECDSA();
@@ -22,7 +21,7 @@ export default async function transferToken(client, tokenId) {
   const newAccountId = getReceipt.accountId;
 
   const query = await new AccountBalanceQuery()
-    .setAccountId(myAccount)
+    .setAccountId(aliceId)
     .execute(client);
 
   console.log(
