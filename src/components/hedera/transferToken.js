@@ -4,10 +4,11 @@ import {
   AccountCreateTransaction,
   AccountBalanceQuery,
   Hbar,
+  TransferTransaction,
 } from "@hashgraph/sdk";
 
 const myAccountId = process.env.REACT_APP_MY_ACCOUNT_ID;
-const alicePrivateKey = process.env.REACT_APP_ALICE_PRIVATE_KEY;
+const myPrivateKey = process.env.REACT_APP_MY_PRIVATE_KEY;
 
 export default async function transferToken(client, tokenId) {
   const newAccPrivateKey = PrivateKey.generateECDSA();
@@ -38,5 +39,18 @@ export default async function transferToken(client, tokenId) {
   const associateTokenReceipt = await associateTokenSubmit.getReceipt(client);
   console.log(
     `Associated Token ${associateTokenReceipt.status} with account ${newAccountId}`
+  );
+
+  const tokenTransfer = await new TransferTransaction()
+    .addTokenTransfer(tokenId, myAccountId, -5)
+    .addTokenTransfer(tokenId, newAccountId, 5)
+    .freezeWith(client)
+    .sign(PrivateKey.fromStringECDSA(myPrivateKey));
+
+  const tokenTransferSubmit = await tokenTransfer.execute(client);
+  const tokenTransferReceipt = await tokenTransferSubmit.getReceipt(client);
+
+  console.log(
+    `Transferred NFT ${tokenId} with serial ${tokenTransferReceipt.serials[0].low}`
   );
 }
